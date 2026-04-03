@@ -1,0 +1,11 @@
+/* news_app1/static/news_app1/style.css */
+body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f8f9fa; margin: 0; padding: 20px; }
+.container { max-width: 1000px; margin: auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+h1 { color: #343a40; border-bottom: 2px solid #007bff; padding-bottom: 10px; }
+table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+th { background-color: #007bff; color: white; padding: 12px; text-align: left; }
+td { padding: 12px; border-bottom: 1px solid #dee2e6; }
+tr:hover { background-color: #f1f1f1; }
+.btn-approve { background-color: #28a745; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer; transition: 0.3s; }
+.btn-approve:hover { background-color: #218838; }
+.empty-msg { text-align: center; color: #6c757d; padding: 20px; }

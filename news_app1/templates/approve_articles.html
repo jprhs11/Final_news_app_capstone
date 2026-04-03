@@ -1,0 +1,41 @@
+<!-- news_app1/templates/news_app1/approve_articles.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Editor Dashboard - Approve Articles</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; background-color: #f4f4f4; }
+        table { width: 100%; border-collapse: collapse; background: white; }
+        th, td { padding: 12px; border: 1px solid #ddd; text-align: left; }
+        th { background-color: #333; color: white; }
+        .btn { padding: 8px 12px; background-color: #28a745; color: white; text-decoration: none; border-radius: 4px; border: none; cursor: pointer; }
+        .btn:hover { background-color: #218838; }
+    </style>
+</head>
+<body>
+    <h1>Editor Approval Dashboard</h1>
+    <table>
+        <tr>
+            <th>Title</th>
+            <th>Author</th>
+            <th>Created At</th>
+            <th>Action</th>
+        </tr>
+        {% for article in articles %}
+        <tr>
+            <td>{{ article.title }}</td>
+            <td>{{ article.author.username }}</td>
+            <td>{{ article.created_at|date:"Y-m-d H:i" }}</td>
+            <td>
+                <form method="POST" action="{% url 'approve_article' article.id %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn">Approve</button>
+                </form>
+            </td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="4">No articles pending approval.</td></tr>
+        {% endfor %}
+    </table>
+</body>
+</html>
