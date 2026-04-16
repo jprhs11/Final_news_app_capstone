@@ -17,7 +17,7 @@ PEP 8 Compliance: Code follows strict Python styling guidelines for readability 
 
 1. Clone the Repository:
 git clone
-cd 
+cd Final_news_app_capstone
 2. Set up the Virtual Environment:
 python -m venv .venv
 Windows:
@@ -33,6 +33,7 @@ python manage.py createsuperuser
 6. Launch the Server:
 python manage.py runserver
 Access the site at: http://127.0.0.1:8000
+
 🐳 Deployment with Docker
 The application is containerized to ensure it works on any system without manual configuration.
 1. Build the Image:
@@ -45,12 +46,14 @@ docker exec -it
 
 (docker ps -q) python manage.py createsuperuser
 Access: Open http://localhost:8000/ in your browser.
+
 📚 Technical Documentation (Sphinx)
 Technical documentation for modules, views, and models is located in the docs/ directory.
 To view: Open docs/build/html/index.html in any web browser.
 To rebuild:
 cd docs
 python -m sphinx.cmd.build -b html source build/html
+
 📁 Project Structure
 news_app1/: The primary Django application logic.
 news_app1/models.py: Database schema for Users, Articles, Publishers, and Newsletters.
@@ -58,9 +61,11 @@ news_app1/views.py: Role-based business logic and permission handling.
 docs/: Sphinx configuration and generated HTML files.
 Dockerfile: Instructions for building the Docker image.
 requirements.txt: List of Python packages required for the project.
+
 🛡 Security & Defensive Coding
 Used get_object_or_404 to prevent server crashes on missing data.
 Implemented login_required decorators and role-based HttpResponseForbidden checks.
 Sensitive files (like local databases) are excluded via .gitignore.
+
 💡 Note for Reviewers
 The Docker environment is configured to use SQLite by default to ensure portability and instant functionality across different machines without requiring a pre-configured MySQL server.
