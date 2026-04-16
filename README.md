@@ -4,10 +4,15 @@ A full-stack Django web application featuring a robust role-based access control
 🚀 Key Features
 
 👥 User Roles
+
 Readers: Explore a directory of journalists and publishers, subscribe to favorites, and view a personalized feed of approved articles.
+
 Journalists: Draft and manage articles, curate approved content into newsletters, and track the status of their submissions.
+
 Editors: A unified dashboard to review, edit, and approve/reject both articles and newsletters. Editors can also create publisher profiles directly from the front-end.
+
 🛠 Technical Enhancements
+
 Version Control: Managed via Git with dedicated feature branches (docs, container).
 Documentation: Comprehensive technical docs generated via Sphinx using Python docstrings.
 Containerization: Fully containerized using Docker for "plug-and-play" deployment.
