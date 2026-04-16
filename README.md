@@ -61,20 +61,20 @@ Access the site at: http://127.0.0.1:8000
 The application is containerized to ensure it works on any system without manual configuration.
 
 1. Build the Image:
-2. 
-docker build -t news-app .
+   
+       docker build -t news-app .
 
-3. Run the Container:
-4. 
-docker run -p 8000:8000 news-app
+2. Run the Container:
 
-5. Setup inside Docker:
-6. 
+       docker run -p 8000:8000 news-app
+
+3. Setup inside Docker:
+
 In a separate terminal window, initialize the container's database and admin:
 
-docker exec -it 
+      docker exec -it 
 
-(docker ps -q) python manage.py createsuperuser
+      (docker ps -q) python manage.py createsuperuser
 
 Access: Open http://localhost:8000/ in your browser.
 
@@ -86,9 +86,9 @@ To view: Open docs/build/html/index.html in any web browser.
 
 To rebuild:
 
-cd docs
+      cd docs
 
-python -m sphinx.cmd.build -b html source build/html
+      python -m sphinx.cmd.build -b html source build/html
 
 📁 Project Structure
 
