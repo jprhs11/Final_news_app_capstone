@@ -29,14 +29,14 @@ PEP 8 Compliance: Code follows strict Python styling guidelines for readability 
 
        cd Final_news_app_capstone
 
-2.. Set up the Virtual Environment:
+2. Set up the Virtual Environment:
    
-    python -m venv .venv
+       python -m venv .venv
 
-    Windows:
-    ..venv\Scripts\activate
-    Mac/Linux:
-    source .venv/bin/activate
+       Windows:
+       ..venv\Scripts\activate
+       Mac/Linux:
+       source .venv/bin/activate
 
 3. Install Dependencies:
 
