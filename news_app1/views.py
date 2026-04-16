@@ -18,7 +18,11 @@ from django.contrib.auth.forms import UserCreationForm
 
 
 class CustomUserCreationForm(UserCreationForm):
-    """Signup form with Reader, Journalist, and Editor roles."""
+    """
+    A custom registration form that extends Django's UserCreationForm.
+
+    Includes a role selection field for Readers, Journalists, and Editors.
+    """
 
     role = forms.ChoiceField(
         choices=[
@@ -34,7 +38,9 @@ class CustomUserCreationForm(UserCreationForm):
 
 
 class PublisherCreationForm(forms.ModelForm):
-    """Form for Editors to create Publishers from the front-end."""
+    """
+    A model form for Editors to create new Publisher entities.
+    """
 
     class Meta:
         model = Publisher
@@ -45,7 +51,9 @@ class PublisherCreationForm(forms.ModelForm):
 
 
 def register_user(request):
-    """Handles signup and logs the user in automatically."""
+    """
+    Handles new user registration and automatic login.
+    """
     if request.method == "POST":
         form = CustomUserCreationForm(request.POST)
         if form.is_valid():
@@ -62,12 +70,13 @@ def register_user(request):
 
 @login_required
 def editor_approval_list(request):
-    """Dashboard for Editors to review all pending submissions."""
+    """
+    Displays a dashboard of all articles and newsletters awaiting approval.
+    """
     is_ed = request.user.role == "Editor"
     if not is_ed and not request.user.is_superuser:
         return HttpResponseForbidden("Editors only.")
 
-    # Combined dashboard logic for articles and newsletters
     pending_articles = Article.objects.filter(approved=False)
     pending_newsletters = Newsletter.objects.filter(approved=False)
 
@@ -80,11 +89,13 @@ def editor_approval_list(request):
 
 @login_required
 def editor_newsletter_list(request):
-    """Master list for Editors to manage existing newsletters."""
+    """
+    Displays a comprehensive list of all newsletters for administrative
+    management.
+    """
     is_ed = request.user.role == "Editor"
     if not is_ed and not request.user.is_superuser:
         return HttpResponseForbidden("Editors only.")
-    # Show status-sorted list of all newsletters
     news = Newsletter.objects.all().order_by("approved", "-created_at")
     return render(
         request, "news_app1/editor_newsletters.html", {"newsletters": news}
@@ -93,7 +104,9 @@ def editor_newsletter_list(request):
 
 @login_required
 def editor_edit_review(request, article_id):
-    """Allows Editors to edit content and leave review notes."""
+    """
+    Allows an Editor to review, edit, and leave notes on a specific article.
+    """
     is_ed = request.user.role == "Editor"
     if not is_ed and not request.user.is_superuser:
         return HttpResponseForbidden("Editors only.")
@@ -111,7 +124,9 @@ def editor_edit_review(request, article_id):
 
 @login_required
 def approve_article_action(request, article_id):
-    """Quick POST action to approve an article submission."""
+    """
+    Provides a quick POST action for Editors to approve an article.
+    """
     is_ed = request.user.role == "Editor"
     if not is_ed and not request.user.is_superuser:
         return HttpResponseForbidden()
@@ -124,7 +139,9 @@ def approve_article_action(request, article_id):
 
 @login_required
 def approve_newsletter_action(request, newsletter_id):
-    """Quick POST action to approve a newsletter submission."""
+    """
+    Provides a quick POST action for Editors to approve a newsletter.
+    """
     is_ed = request.user.role == "Editor"
     if not is_ed and not request.user.is_superuser:
         return HttpResponseForbidden()
@@ -137,7 +154,9 @@ def approve_newsletter_action(request, newsletter_id):
 
 @login_required
 def create_publisher_view(request):
-    """Allows Editors to create publishers without admin panel."""
+    """
+    Displays a form for Editors to create new Publisher organizations.
+    """
     is_ed = request.user.role == "Editor"
     if not is_ed and not request.user.is_superuser:
         return HttpResponseForbidden("Editors only.")
@@ -158,11 +177,12 @@ def create_publisher_view(request):
 
 @login_required
 def journalist_newsletter_list(request):
-    """Dashboard for Journalists to manage their created work."""
+    """
+    Displays a list of newsletters created by the logged-in Journalist.
+    """
     is_jr = request.user.role == "Journalist"
     if not is_jr and not request.user.is_superuser:
         return HttpResponseForbidden("Journalists only.")
-    # Journalists only see their own creations
     news = Newsletter.objects.filter(author=request.user)
     return render(
         request,
@@ -173,7 +193,9 @@ def journalist_newsletter_list(request):
 
 @login_required
 def create_article_view(request):
-    """UI form for Journalists to submit articles."""
+    """
+    Displays a form for Journalists to submit new articles.
+    """
     is_jr = request.user.role == "Journalist"
     if not is_jr and not request.user.is_superuser:
         return HttpResponseForbidden("Journalists only.")
@@ -194,12 +216,13 @@ def create_article_view(request):
 
 @login_required
 def edit_article_view(request, article_id):
-    """Edits article and resets approval status for re-review."""
+    """
+    Allows a Journalist to edit their own article, resetting approval status.
+    """
     art = get_object_or_404(Article, id=article_id, author=request.user)
     if request.method == "POST":
         art.title = request.POST.get("title")
         art.content = request.POST.get("content")
-        # Edits trigger a new review cycle
         art.approved = False
         art.save()
         return redirect("journalist_articles")
@@ -208,7 +231,9 @@ def edit_article_view(request, article_id):
 
 @login_required
 def delete_article_view(request, article_id):
-    """Allows Journalists to delete their own articles."""
+    """
+    Allows a Journalist to delete their own article.
+    """
     art = get_object_or_404(Article, id=article_id, author=request.user)
     if request.method == "POST":
         art.delete()
@@ -217,7 +242,9 @@ def delete_article_view(request, article_id):
 
 @login_required
 def delete_newsletter_view(request, newsletter_id):
-    """Allows Journalists (owners) or Editors to delete newsletters."""
+    """
+    Allows the author or an Editor to delete a specific newsletter.
+    """
     news = get_object_or_404(Newsletter, id=newsletter_id)
     is_ed = request.user.role == "Editor"
     is_owner = news.author == request.user
@@ -230,7 +257,10 @@ def delete_newsletter_view(request, newsletter_id):
 
 @login_required
 def create_newsletter_view(request):
-    """UI form for Journalists to bundle approved articles."""
+    """
+    Displays a form for Journalists to create a newsletter from approved
+    articles.
+    """
     is_jr = request.user.role == "Journalist"
     if not is_jr and not request.user.is_superuser:
         return HttpResponseForbidden()
@@ -251,7 +281,9 @@ def create_newsletter_view(request):
 
 @login_required
 def edit_newsletter_view(request, newsletter_id):
-    """Allows owners or Editors to modify newsletter content."""
+    """
+    Allows Journalists or Editors to modify a newsletter's content.
+    """
     news = get_object_or_404(Newsletter, id=newsletter_id)
     is_ed = request.user.role == "Editor"
     is_owner = news.author == request.user
@@ -266,7 +298,6 @@ def edit_newsletter_view(request, newsletter_id):
         news.save()
         return redirect("newsletter_list")
 
-    # Editors can pick any approved article; Journalists pick their own
     if is_ed or request.user.is_superuser:
         arts = Article.objects.filter(approved=True)
     else:
@@ -281,7 +312,9 @@ def edit_newsletter_view(request, newsletter_id):
 
 @login_required
 def journalist_article_list(request):
-    """Lists articles for the logged-in Journalist."""
+    """
+    Displays a management list of all articles written by the Journalist.
+    """
     is_jr = request.user.role == "Journalist"
     if not is_jr and not request.user.is_superuser:
         return HttpResponseForbidden()
@@ -296,7 +329,9 @@ def journalist_article_list(request):
 
 @login_required
 def journalist_directory(request):
-    """Directory showing all system journalists."""
+    """
+    Displays a public directory of system Journalists for Readers to follow.
+    """
     journalists = User.objects.filter(role="Journalist")
     return render(
         request,
@@ -310,7 +345,9 @@ def journalist_directory(request):
 
 @login_required
 def publisher_directory(request):
-    """Directory showing all system publishers."""
+    """
+    Displays a public directory of Publishers for Readers to follow.
+    """
     pubs = Publisher.objects.all()
     return render(
         request,
@@ -321,7 +358,9 @@ def publisher_directory(request):
 
 @login_required
 def toggle_subscription(request, target_type, target_id):
-    """Toggles follower relationships for Readers."""
+    """
+    Toggles a Reader's subscription to a Journalist or Publisher.
+    """
     user = request.user
     if user.role != "Reader":
         return HttpResponseForbidden()
@@ -340,7 +379,9 @@ def toggle_subscription(request, target_type, target_id):
 
 @login_required
 def subscribed_articles_view(request):
-    """Feed restricted to articles from followed journalists."""
+    """
+    Displays a feed of approved articles from the user's subscriptions.
+    """
     u = request.user
     arts = Article.objects.filter(
         author__in=u.subscribed_journalists.all(), approved=True
@@ -355,13 +396,18 @@ def subscribed_articles_view(request):
 
 
 class ArticleViewSet(viewsets.ModelViewSet):
-    """API for Article operations with role-based filtering."""
+    """
+    API ViewSet for Article CRUD operations with role-based filtering.
+    """
 
     serializer_class = ArticleSerializer
     filter_backends = [filters.SearchFilter]
     search_fields = ["id", "title"]
 
     def get_queryset(self):
+        """
+        Filters API results based on authentication and user role.
+        """
         u = self.request.user
         if not u.is_authenticated:
             return Article.objects.filter(approved=True)
@@ -370,6 +416,9 @@ class ArticleViewSet(viewsets.ModelViewSet):
         return Article.objects.filter(approved=True)
 
     def perform_create(self, serializer):
+        """
+        Ensures article authors are set to the current user via API.
+        """
         is_jr = self.request.user.role == "Journalist"
         if is_jr or self.request.user.is_superuser:
             serializer.save(author=self.request.user)
@@ -378,7 +427,9 @@ class ArticleViewSet(viewsets.ModelViewSet):
 
 
 class NewsletterViewSet(viewsets.ModelViewSet):
-    """API for Newsletter operations."""
+    """
+    API ViewSet for Newsletter operations.
+    """
 
     queryset = Newsletter.objects.all()
     serializer_class = NewsletterSerializer
@@ -388,7 +439,9 @@ class NewsletterViewSet(viewsets.ModelViewSet):
 
 
 def home_landing_page(request):
-    """Landing page with aggregated unapproved work counts."""
+    """
+    Root view providing the correct portal content based on user role.
+    """
     ctx = {"is_editor": False, "is_journalist": False, "is_reader": False}
     if request.user.is_authenticated:
         role = getattr(request.user, "role", "")
@@ -399,7 +452,6 @@ def home_landing_page(request):
         sub_j = request.user.subscribed_journalists.exists()
         ctx["has_subscriptions"] = sub_p or sub_j
 
-        # Aggregate counts for the Editor's dashboard button
         if ctx["is_editor"]:
             art_count = Article.objects.filter(approved=False).count()
             news_count = Newsletter.objects.filter(approved=False).count()
@@ -414,14 +466,18 @@ def home_landing_page(request):
 
 @login_required
 def article_detail_view(request, article_id):
-    """Single article reader view."""
+    """
+    Displays the full content of a specific news article.
+    """
     art = get_object_or_404(Article, id=article_id)
     return render(request, "news_app1/article_detail.html", {"article": art})
 
 
 @login_required
 def newsletter_list_view(request):
-    """Reader view showing only approved newsletters."""
+    """
+    Displays a list of all approved newsletters to the public.
+    """
     news = Newsletter.objects.filter(approved=True)
     return render(
         request, "news_app1/newsletter_list.html", {"newsletters": news}
@@ -430,7 +486,9 @@ def newsletter_list_view(request):
 
 @login_required
 def author_article_list(request, author_id):
-    """Public profile for system authors."""
+    """
+    Displays a public page showing articles from a specific author.
+    """
     auth = get_object_or_404(User, id=author_id)
     arts = Article.objects.filter(author=auth, approved=True)
     return render(
@@ -442,7 +500,9 @@ def author_article_list(request, author_id):
 
 @login_required
 def publisher_article_list(request, publisher_id):
-    """Public profile for system publishers."""
+    """
+    Displays a public page showing articles from a specific Publisher.
+    """
     pub = get_object_or_404(Publisher, id=publisher_id)
     arts = Article.objects.filter(publisher=pub, approved=True)
     return render(
@@ -454,10 +514,14 @@ def publisher_article_list(request, publisher_id):
 
 @api_view(["POST"])
 def api_approved_log(request):
-    """Approval logging event API."""
+    """
+    API endpoint to log approval events.
+    """
     return Response({"message": "Logged"})
 
 
 def custom_404_view(request, exception):
-    """Branded error page."""
+    """
+    Returns a user-friendly custom 404 Error page.
+    """
     return render(request, "404.html", status=404)
