@@ -3,7 +3,14 @@ from django.db import models
 
 
 class User(AbstractUser):
-    # Requirement: Capitalized roles as requested
+    """
+    Custom User model extending AbstractUser to include role-based access.
+
+    Roles include Reader, Journalist, and Editor. This model handles
+    subscription relationships for Readers and automatically manages
+    Django Group assignments based on the chosen role.
+    """
+
     ROLE_CHOICES = (
         ("Reader", "Reader"),
         ("Journalist", "Journalist"),
@@ -23,6 +30,10 @@ class User(AbstractUser):
     )
 
     def save(self, *args, **kwargs):
+        """
+        Overrides the save method to handle group assignment and
+        field cleanup based on the user's role.
+        """
         # Initial save to get Primary Key
         super().save(*args, **kwargs)
 
@@ -39,6 +50,12 @@ class User(AbstractUser):
 
 
 class Publisher(models.Model):
+    """
+    Represents a publishing organization.
+
+    Links Editors and Journalists to a specific publication entity.
+    """
+
     name = models.CharField(max_length=255)
     editors = models.ManyToManyField(User, related_name="edited_publications")
     journalists = models.ManyToManyField(
@@ -46,10 +63,17 @@ class Publisher(models.Model):
     )
 
     def __str__(self):
+        """Returns the string representation of the Publisher name."""
         return self.name
 
 
 class Article(models.Model):
+    """
+    Represents a news article submitted by a Journalist.
+
+    Contains content, approval status, and feedback notes from Editors.
+    """
+
     title = models.CharField(max_length=255)
     content = models.TextField()
     author = models.ForeignKey(
@@ -67,10 +91,17 @@ class Article(models.Model):
     review_notes = models.TextField(blank=True, null=True)
 
     def __str__(self):
+        """Returns the string representation of the Article title."""
         return self.title
 
 
 class Newsletter(models.Model):
+    """
+    A curated collection of approved articles created by a Journalist.
+
+    Requires Editor approval before becoming visible to Readers.
+    """
+
     title = models.CharField(max_length=255)
     description = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
@@ -80,8 +111,8 @@ class Newsletter(models.Model):
     articles = models.ManyToManyField(
         Article, related_name="included_in_newsletters"
     )
-    approved = False  # Default to False
     approved = models.BooleanField(default=False)
 
     def __str__(self):
+        """Returns the string representation of the Newsletter title."""
         return self.title
