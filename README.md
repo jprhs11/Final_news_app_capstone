@@ -25,34 +25,34 @@ PEP 8 Compliance: Code follows strict Python styling guidelines for readability 
 
 1. Clone the Repository:
    
-git clone
+   git clone
 
-cd Final_news_app_capstone
+   cd Final_news_app_capstone
 
 2.. Set up the Virtual Environment:
    
-python -m venv .venv
+   python -m venv .venv
 
-Windows:
-..venv\Scripts\activate
-Mac/Linux:
-source .venv/bin/activate
+   Windows:
+   ..venv\Scripts\activate
+   Mac/Linux:
+   source .venv/bin/activate
 
 3. Install Dependencies:
    
-pip install -r requirements.txt
+   pip install -r requirements.txt
 
 4. Initialize the Database:
    
-python manage.py migrate
+   python manage.py migrate
 
 5. Create an Admin Account:
 
-python manage.py createsuperuser
+   python manage.py createsuperuser
 
 6. Launch the Server:
 
-python manage.py runserver
+   python manage.py runserver
 
 Access the site at: http://127.0.0.1:8000
 
