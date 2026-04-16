@@ -1,7 +1,10 @@
 📰 News Portal Capstone Project
 
+
 A full-stack Django web application featuring a robust role-based access control (RBAC) system for journalists, editors, and readers. This project demonstrates advanced Django workflows, containerization with Docker, and automated documentation with Sphinx.
+
 🚀 Key Features
+
 
 👥 User Roles
 
@@ -20,6 +23,7 @@ Documentation: Comprehensive technical docs generated via Sphinx using Python do
 Containerization: Fully containerized using Docker for "plug-and-play" deployment.
 
 PEP 8 Compliance: Code follows strict Python styling guidelines for readability and maintainability.
+
 
 💻 Local Installation (Virtual Environment)
 
@@ -56,6 +60,7 @@ PEP 8 Compliance: Code follows strict Python styling guidelines for readability 
 
 Access the site at: http://127.0.0.1:8000
 
+
 🐳 Deployment with Docker
 
 The application is containerized to ensure it works on any system without manual configuration.
@@ -78,6 +83,7 @@ In a separate terminal window, initialize the container's database and admin:
 
 Access: Open http://localhost:8000/ in your browser.
 
+
 📚 Technical Documentation (Sphinx)
 
 Technical documentation for modules, views, and models is located in the docs/ directory.
@@ -89,6 +95,7 @@ To rebuild:
       cd docs
 
       python -m sphinx.cmd.build -b html source build/html
+
 
 📁 Project Structure
 
@@ -103,6 +110,7 @@ docs/: Sphinx configuration and generated HTML files.
 Dockerfile: Instructions for building the Docker image.
 
 requirements.txt: List of Python packages required for the project.
+
 
 🛡 Security & Defensive Coding
 
