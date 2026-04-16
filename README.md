@@ -11,61 +11,42 @@ Documentation: Comprehensive technical docs generated via Sphinx using Python do
 Containerization: Fully containerized using Docker for "plug-and-play" deployment.
 PEP 8 Compliance: Code follows strict Python styling guidelines for readability and maintainability.
 💻 Local Installation (Virtual Environment)
-Clone the Repository:
-bash
-git clone <your-repository-url>
+1. Clone the Repository:
+git clone
 cd NEWS_APPLICATION
-Use code with caution.
-Set up the Virtual Environment:
-bash
+2. Set up the Virtual Environment:
 python -m venv .venv
-# Windows:
-.\.venv\Scripts\activate
-# Mac/Linux:
+Windows:
+..venv\Scripts\activate
+Mac/Linux:
 source .venv/bin/activate
-Use code with caution.
-Install Dependencies:
-bash
+3. Install Dependencies:
 pip install -r requirements.txt
-Use code with caution.
-Initialize the Database:
-bash
+4. Initialize the Database:
 python manage.py migrate
-Use code with caution.
-Create an Admin Account:
-bash
+5. Create an Admin Account:
 python manage.py createsuperuser
-Use code with caution.
-Launch the Server:
-bash
+6. Launch the Server:
 python manage.py runserver
-Use code with caution.
-Access the site at: 127.0.0
+Access the site at: http://127.0.0.1:8000
 🐳 Deployment with Docker
 The application is containerized to ensure it works on any system without manual configuration.
-Build the Image:
-bash
-docker build -t news-portal-app .
-Use code with caution.
-Run the Container:
-bash
-docker run -p 8000:8000 news-portal-app
-Use code with caution.
-Setup inside Docker:
-In a separate terminal window, initialize the container's database:
-bash
-docker exec -it $(docker ps -q) python manage.py migrate
-docker exec -it $(docker ps -q) python manage.py createsuperuser
-Use code with caution.
+1. Build the Image:
+docker build -t news-app .
+2. Run the Container:
+docker run -p 8000:8000 news-app
+3. Setup inside Docker:
+In a separate terminal window, initialize the container's database and admin:
+docker exec -it 
+
+(docker ps -q) python manage.py createsuperuser
 Access: Open http://localhost:8000/ in your browser.
 📚 Technical Documentation (Sphinx)
 Technical documentation for modules, views, and models is located in the docs/ directory.
-To view the documentation, open docs/build/html/index.html in any web browser.
-To rebuild the documentation:
-bash
+To view: Open docs/build/html/index.html in any web browser.
+To rebuild:
 cd docs
 python -m sphinx.cmd.build -b html source build/html
-Use code with caution.
 📁 Project Structure
 news_app1/: The primary Django application logic.
 news_app1/models.py: Database schema for Users, Articles, Publishers, and Newsletters.
@@ -75,7 +56,7 @@ Dockerfile: Instructions for building the Docker image.
 requirements.txt: List of Python packages required for the project.
 🛡 Security & Defensive Coding
 Used get_object_or_404 to prevent server crashes on missing data.
-Implemented login_required decorators and role-based HttpResponseForbidden checks to protect sensitive dashboards.
-Secrets (like database passwords) are handled via environment variables or excluded via .gitignore.
+Implemented login_required decorators and role-based HttpResponseForbidden checks.
+Sensitive files (like local databases) are excluded via .gitignore.
 💡 Note for Reviewers
 The Docker environment is configured to use SQLite by default to ensure portability and instant functionality across different machines without requiring a pre-configured MySQL server.
