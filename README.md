@@ -31,12 +31,12 @@ PEP 8 Compliance: Code follows strict Python styling guidelines for readability 
 
 2.. Set up the Virtual Environment:
    
-       python -m venv .venv
+    python -m venv .venv
 
-       Windows:
-       ..venv\Scripts\activate
-       Mac/Linux:
-       source .venv/bin/activate
+    Windows:
+    ..venv\Scripts\activate
+    Mac/Linux:
+    source .venv/bin/activate
 
 3. Install Dependencies:
 
