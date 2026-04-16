@@ -1,0 +1,20 @@
+{% extends 'news_app1/base.html' %}
+
+{% block content %}
+<div style="max-width: 600px; margin: 100px auto; text-align: center;">
+    <h1 style="font-size: 5rem; color: #e74c3c; margin-bottom: 10px;">404</h1>
+    <h2 style="color: #2c3e50;">Oops! Page Not Found</h2>
+
+    <p style="color: #7f8c8d; font-size: 1.1rem; margin: 20px 0;">
+        We couldn't find the page you're looking for. It might have been moved or doesn't exist.
+    </p>
+
+    <div style="margin-top: 30px; border-top: 1px solid #eee; padding-top: 20px;">
+        <p>Need help finding your way?</p>
+        <a href="{% url 'home' %}"
+            style="display: inline-block; background: #3498db; color: white; padding: 12px 25px; text-decoration: none; border-radius: 5px; font-weight: bold;">
+            Return to Home Page
+        </a>
+    </div>
+</div>
+{% endblock %}

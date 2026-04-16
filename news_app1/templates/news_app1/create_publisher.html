@@ -1,0 +1,60 @@
+{% extends 'news_app1/base.html' %}
+
+{% block content %}
+<div
+    style="max-width: 600px; margin: 50px auto; font-family: sans-serif; background: #fff; padding: 30px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); border: 1px solid #ddd;">
+
+    <header style="border-bottom: 2px solid #27ae60; padding-bottom: 10px; margin-bottom: 25px;">
+        <h2 style="color: #2c3e50; margin: 0;">Create New Publisher</h2>
+        <p style="color: #7f8c8d; font-size: 0.9rem; margin-top: 5px;">Enter details to add a new publishing house to
+            the directory.</p>
+    </header>
+
+    <form method="post" style="display: flex; flex-direction: column; gap: 20px;">
+        {% csrf_token %}
+
+        {# Custom rendering for PEP8/Form consistency #}
+        {% for field in form %}
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+            <label style="font-weight: bold; color: #34495e;">{{ field.label }}</label>
+            {{ field }}
+            {% if field.errors %}
+            <p style="color: #e74c3c; font-size: 0.85rem; margin: 4px 0 0 0;">{{ field.errors.0 }}</p>
+            {% endif %}
+        </div>
+        {% endfor %}
+
+        <div style="margin-top: 10px; display: flex; gap: 15px;">
+            <button type="submit"
+                style="background: #27ae60; color: white; padding: 12px 25px; border: none; border-radius: 5px; font-weight: bold; cursor: pointer; font-size: 1rem;">
+                Create Publisher
+            </button>
+            <a href="{% url 'publisher_directory' %}"
+                style="background: #95a5a6; color: white; padding: 12px 25px; border-radius: 5px; text-decoration: none; font-weight: bold; font-size: 1rem; text-align: center;">
+                Cancel
+            </a>
+        </div>
+    </form>
+</div>
+
+{# Simple internal CSS to style the Django form inputs #}
+<style>
+    input[type="text"],
+    textarea,
+    select {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+        /* Ensures padding doesn't affect width */
+        font-size: 1rem;
+    }
+
+    input:focus {
+        border-color: #27ae60;
+        outline: none;
+        box-shadow: 0 0 5px rgba(39, 174, 96, 0.2);
+    }
+</style>
+{% endblock %}

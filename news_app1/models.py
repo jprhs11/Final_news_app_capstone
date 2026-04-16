@@ -1,4 +1,3 @@
-# news_app1/models.py
 from django.contrib.auth.models import AbstractUser, Group
 from django.db import models
 
@@ -6,23 +5,21 @@ from django.db import models
 class User(AbstractUser):
     # Requirement: Capitalized roles as requested
     ROLE_CHOICES = (
-        ('Reader', 'Reader'),
-        ('Journalist', 'Journalist'),
-        ('Editor', 'Editor'),
+        ("Reader", "Reader"),
+        ("Journalist", "Journalist"),
+        ("Editor", "Editor"),
     )
     role = models.CharField(max_length=20, choices=ROLE_CHOICES)
 
     # Reader-specific subscription fields
     subscribed_publishers = models.ManyToManyField(
-        'Publisher',
-        blank=True,
-        related_name='reader_subscribers'
+        "Publisher", blank=True, related_name="reader_subscribers"
     )
     subscribed_journalists = models.ManyToManyField(
-        'self',
+        "self",
         symmetrical=False,
         blank=True,
-        related_name='journalist_followers'
+        related_name="journalist_followers",
     )
 
     def save(self, *args, **kwargs):
@@ -35,7 +32,7 @@ class User(AbstractUser):
             self.groups.add(group)
 
         # 2. "Vice Versa" Requirement: Clean up irrelevant fields
-        if self.role in ['Journalist', 'Editor']:
+        if self.role in ["Journalist", "Editor"]:
             if self.pk:
                 self.subscribed_publishers.clear()
                 self.subscribed_journalists.clear()
@@ -43,13 +40,9 @@ class User(AbstractUser):
 
 class Publisher(models.Model):
     name = models.CharField(max_length=255)
-    editors = models.ManyToManyField(
-        User,
-        related_name='edited_publications'
-    )
+    editors = models.ManyToManyField(User, related_name="edited_publications")
     journalists = models.ManyToManyField(
-        User,
-        related_name='employer_publications'
+        User, related_name="employer_publications"
     )
 
     def __str__(self):
@@ -60,19 +53,18 @@ class Article(models.Model):
     title = models.CharField(max_length=255)
     content = models.TextField()
     author = models.ForeignKey(
-        User,
-        on_delete=models.CASCADE,
-        related_name='articles'
+        User, on_delete=models.CASCADE, related_name="articles"
     )
     publisher = models.ForeignKey(
         Publisher,
         on_delete=models.SET_NULL,
         null=True,
         blank=True,
-        related_name='published_articles'
+        related_name="published_articles",
     )
     approved = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
+    review_notes = models.TextField(blank=True, null=True)
 
     def __str__(self):
         return self.title
@@ -83,15 +75,13 @@ class Newsletter(models.Model):
     description = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     author = models.ForeignKey(
-        User,
-        on_delete=models.CASCADE,
-        related_name='created_newsletters'
+        User, on_delete=models.CASCADE, related_name="created_newsletters"
     )
     articles = models.ManyToManyField(
-        Article,
-        related_name='included_in_newsletters'
+        Article, related_name="included_in_newsletters"
     )
+    approved = False  # Default to False
+    approved = models.BooleanField(default=False)
 
     def __str__(self):
         return self.title
-

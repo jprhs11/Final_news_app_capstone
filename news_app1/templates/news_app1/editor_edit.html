@@ -1,0 +1,18 @@
+{% extends 'news_app1/base.html' %}
+{% block content %}
+<h2>Review & Edit Article</h2>
+<form method="post">
+    {% csrf_token %}
+    <p>Title: <input type="text" name="title" value="{{ article.title }}" style="width:100%;"></p>
+    <p>Content: <textarea name="content" style="width:100%; height:300px;">{{ article.content }}</textarea></p>
+    <p><strong>Editor Review Notes:</strong><br>
+        <textarea name="review_notes" style="width:100%; height:100px;"
+            placeholder="Leave feedback for the journalist...">{{ article.review_notes|default_if_none:"" }}</textarea>
+    </p>
+
+    <div style="margin-top: 20px;">
+        <button type="submit" name="save_only" class="btn">Save Progress</button>
+        <button type="submit" name="approve" class="btn" style="background:#27ae60;">Save & Approve Now</button>
+    </div>
+</form>
+{% endblock %}

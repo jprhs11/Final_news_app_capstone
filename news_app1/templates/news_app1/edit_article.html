@@ -1,0 +1,41 @@
+{% extends 'news_app1/base.html' %}
+
+{% block content %}
+<div
+    style="max-width: 800px; margin: 40px auto; font-family: sans-serif; background: #fff; padding: 30px; border-radius: 8px; border: 1px solid #ddd;">
+    <h2 style="color: #2c3e50; border-bottom: 2px solid #f39c12; padding-bottom: 10px;">Edit Article</h2>
+
+    <div
+        style="background: #fff3e0; border: 1px solid #ffe0b2; padding: 15px; border-radius: 4px; margin-bottom: 25px; color: #e65100;">
+        <strong>Note:</strong> Saving changes will set this article back to <strong>Pending Review</strong>. It must be
+        re-approved by an Editor before it is published again.
+    </div>
+
+    <form method="post">
+        {% csrf_token %}
+
+        <div style="margin-bottom: 20px;">
+            <label style="display:block; font-weight:bold; margin-bottom:8px;">Article Title</label>
+            <input type="text" name="title" value="{{ article.title }}" required
+                style="width:100%; padding:12px; border:1px solid #ccc; border-radius:4px; font-size: 1rem;">
+        </div>
+
+        <div style="margin-bottom: 20px;">
+            <label style="display:block; font-weight:bold; margin-bottom:8px;">Content</label>
+            <textarea name="content" required
+                style="width:100%; height:400px; padding:12px; border:1px solid #ccc; border-radius:4px; font-size: 1rem; line-height: 1.5;">{{ article.content }}</textarea>
+        </div>
+
+        <div style="display: flex; gap: 15px; margin-top: 30px;">
+            <button type="submit"
+                style="background: #27ae60; color: white; border: none; padding: 12px 25px; border-radius: 4px; font-weight: bold; cursor: pointer; flex: 2;">
+                Save & Resubmit for Approval
+            </button>
+            <a href="{% url 'journalist_articles' %}"
+                style="background: #95a5a6; color: white; text-decoration: none; padding: 12px 25px; border-radius: 4px; font-weight: bold; text-align: center; flex: 1;">
+                Cancel
+            </a>
+        </div>
+    </form>
+</div>
+{% endblock %}

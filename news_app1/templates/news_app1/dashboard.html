@@ -1,32 +1,106 @@
 {% extends 'news_app1/base.html' %}
 
-{% block title %}Editor Dashboard{% endblock %}
+{% block title %}Editor Approval Dashboard{% endblock %}
 
 {% block content %}
-    <h1>Pending Approvals</h1>
-    <table>
-        <thead>
-            <tr>
-                <th>Title</th>
-                <th>Author</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for article in articles %}
-            <tr>
-                <td>{{ article.title }}</td>
-                <td>{{ article.author.username }}</td>
-                <td>
-                    <form method="POST" action="{% url 'approve_article' article.id %}">
-                        {% csrf_token %}
-                        <button type="submit" class="btn-approve">Approve Article</button>
-                    </form>
-                </td>
-            </tr>
-            {% empty %}
-            <tr><td colspan="3" class="empty-msg">All clear! No articles pending approval.</td></tr>
-            {% endfor %}
-        </tbody>
-    </table>
+<div style="max-width: 1100px; margin: 40px auto; font-family: sans-serif;">
+    <header
+        style="border-bottom: 2px solid #3498db; padding-bottom: 10px; margin-bottom: 30px; display: flex; justify-content: space-between; align-items: center;">
+        <h1 style="color: #2c3e50; margin: 0;">Editor Approval Dashboard</h1>
+        <a href="{% url 'home' %}" style="text-decoration: none; color: #3498db; font-weight: bold;">&larr; Back to
+            Portal</a>
+    </header>
+
+    {# SECTION: PENDING ARTICLES #}
+    <h2 style="color: #2c3e50; font-size: 1.2rem; margin-bottom: 15px;">Articles Awaiting Review</h2>
+    <div
+        style="background: white; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); overflow: hidden; margin-bottom: 40px;">
+        <table style="width: 100%; border-collapse: collapse; text-align: left;">
+            <thead>
+                <tr style="background: #f8f9fa; border-bottom: 2px solid #dee2e6;">
+                    <th style="padding: 15px; color: #495057;">Article Title</th>
+                    <th style="padding: 15px; color: #495057;">Author</th>
+                    <th style="padding: 15px; color: #495057; text-align: center;">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for article in articles %}
+                <tr style="border-bottom: 1px solid #eee;">
+                    <td style="padding: 15px;">
+                        <span style="font-weight: bold; color: #2c3e50;">{{ article.title }}</span>
+                    </td>
+                    <td style="padding: 15px; color: #7f8c8d;">{{ article.author.username }}</td>
+                    <td style="padding: 15px; text-align: right;">
+                        <div style="display: flex; gap: 8px; justify-content: flex-end; align-items: center;">
+                            <form method="POST" action="{% url 'approve_article' article.id %}" style="margin: 0;">
+                                {% csrf_token %}
+                                <button type="submit"
+                                    style="background: #27ae60; color: white; border: none; padding: 8px 14px; border-radius: 4px; font-weight: bold; cursor: pointer;">
+                                    Approve Article
+                                </button>
+                            </form>
+                            <a href="{% url 'editor_edit_review' article.id %}"
+                                style="background: #f39c12; color: white; padding: 8px 14px; border-radius: 4px; text-decoration: none; font-weight: bold; font-size: 0.9rem;">
+                                Review & Edit
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="3" style="padding: 40px; text-align: center; color: #95a5a6; font-style: italic;">
+                        No articles currently awaiting approval.
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    {# SECTION: PENDING NEWSLETTERS #}
+    <h2 style="color: #2c3e50; font-size: 1.2rem; margin-bottom: 15px;">Newsletters Awaiting Review</h2>
+    <div style="background: white; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); overflow: hidden;">
+        <table style="width: 100%; border-collapse: collapse; text-align: left;">
+            <thead>
+                <tr style="background: #f8f9fa; border-bottom: 2px solid #dee2e6;">
+                    <th style="padding: 15px; color: #495057;">Newsletter Title</th>
+                    <th style="padding: 15px; color: #495057;">Author</th>
+                    <th style="padding: 15px; color: #495057; text-align: center;">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for newsletter in newsletters %}
+                <tr style="border-bottom: 1px solid #eee;">
+                    <td style="padding: 15px;">
+                        <span style="font-weight: bold; color: #8e44ad;">{{ newsletter.title }}</span>
+                    </td>
+                    <td style="padding: 15px; color: #7f8c8d;">{{ newsletter.author.username }}</td>
+                    <td style="padding: 15px; text-align: right;">
+                        <div style="display: flex; gap: 8px; justify-content: flex-end; align-items: center;">
+                            <form method="POST" action="{% url 'approve_newsletter' newsletter.id %}"
+                                style="margin: 0;">
+                                {% csrf_token %}
+                                <button type="submit"
+                                    style="background: #27ae60; color: white; border: none; padding: 8px 14px; border-radius: 4px; font-weight: bold; cursor: pointer;">
+                                    Approve Newsletter
+                                </button>
+                            </form>
+                            <a href="{% url 'edit_newsletter' newsletter.id %}"
+                                style="background: #3498db; color: white; padding: 8px 14px; border-radius: 4px; text-decoration: none; font-weight: bold; font-size: 0.9rem;">
+                                Edit Content
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="3" style="padding: 40px; text-align: center; color: #95a5a6; font-style: italic;">
+                        No newsletters currently awaiting approval.
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
 {% endblock %}

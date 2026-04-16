@@ -1,0 +1,112 @@
+{% extends 'news_app1/base.html' %}
+
+{% block content %}
+<div style="max-width: 800px; margin: 50px auto; text-align: center; 
+            font-family: sans-serif; line-height: 1.6;">
+    <header style="margin-bottom: 40px;">
+        <h1 style="color: #2c3e50; font-size: 2.5rem;">News Management Portal</h1>
+        <p style="font-size: 1.2rem; color: #7f8c8d;">Official Portal for Readers, Journalists, and Editors.</p>
+    </header>
+
+    <section style="background: #f9f9f9; padding: 30px; border-radius: 8px; border: 1px solid #ddd;">
+        {% if user.is_authenticated %}
+        <h3 style="margin-bottom: 5px;">Welcome back, {{ user.username }}</h3>
+        <p style="margin-bottom: 25px;">Current Role: <strong>{{ user.role }}</strong></p>
+
+        <hr style="margin: 20px 0; border: 0; border-top: 1px solid #eee;">
+
+        {# --- EDITOR SECTION --- #}
+        {% if is_editor %}
+        <p>There are <strong>{{ unapproved_count }}</strong> items awaiting review.</p>
+        <div style="display: flex; gap: 10px; justify-content: center;">
+            <a href="{% url 'editor_dashboard' %}" class="btn" style="background:#f39c12;">
+                Editor Approval dashboard
+            </a>
+        </div>
+
+        {# --- JOURNALIST SECTION --- #}
+        {% elif is_journalist %}
+        <p>You have published <strong>{{ my_articles_count }}</strong> items.</p>
+        <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
+            <a href="{% url 'create_article' %}" class="btn" style="background:#27ae60;">Write New Article</a>
+            <a href="{% url 'create_newsletter' %}" class="btn" style="background:#9b59b6;">Create Newsletter</a>
+            <a href="{% url 'journalist_articles' %}" class="btn">Manage My Articles</a>
+        </div>
+
+        {# --- READER SECTION --- #}
+        {% elif is_reader %}
+        {# Subscription Overview: Shows WHO the user follows #}
+        {% if has_subscriptions %}
+        <div style="margin-bottom: 30px; display: grid; grid-template-columns: 1fr 1fr; gap: 20px; text-align: left;">
+            <div style="background: #fff; padding: 15px; border-radius: 8px; border: 1px solid #eee;">
+                <h4 style="margin-top: 0; color: #34495e; border-bottom: 2px solid #34495e;">Authors I Follow</h4>
+                <ul style="list-style: none; padding: 0; font-size: 0.9rem; margin-top: 10px;">
+                    {% for author in user.subscribed_journalists.all %}
+                    <li style="margin-bottom: 8px;">
+                        <a href="{% url 'author_articles' author.id %}"
+                            style="text-decoration: none; color: #3498db;">{{ author.username }}</a>
+                    </li>
+                    {% empty %}
+                    <li style="color: #bdc3c7; font-style: italic;">No authors followed.</li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <div style="background: #fff; padding: 15px; border-radius: 8px; border: 1px solid #eee;">
+                <h4 style="margin-top: 0; color: #2c3e50; border-bottom: 2px solid #2c3e50;">Publishers I Follow</h4>
+                <ul style="list-style: none; padding: 0; font-size: 0.9rem; margin-top: 10px;">
+                    {% for pub in user.subscribed_publishers.all %}
+                    <li style="margin-bottom: 8px;">
+                        <a href="{% url 'publisher_articles' pub.id %}"
+                            style="text-decoration: none; color: #2c3e50;">{{ pub.name }}</a>
+                    </li>
+                    {% empty %}
+                    <li style="color: #bdc3c7; font-style: italic;">No publishers followed.</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+        {% endif %}
+
+        <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
+            <a href="{% url 'journalist_directory' %}" class="btn" style="background:#34495e;">Discover Authors</a>
+            <a href="{% url 'publisher_directory' %}" class="btn" style="background:#2c3e50;">Publishers</a>
+            <a href="{% url 'newsletter_list' %}" class="btn" style="background:#9b59b6;">Newsletters</a>
+            {% if has_subscriptions %}
+            <a href="{% url 'subscribed_feed' %}" class="btn" style="background:#27ae60;">View My Feed</a>
+            {% endif %}
+        </div>
+        {% endif %}
+
+        {% else %}
+        {# --- GUEST SECTION --- #}
+        <h3>Access the Portal</h3>
+        <div style="display: flex; gap: 15px; justify-content: center; margin-top: 20px;">
+            <a href="{% url 'login' %}" class="btn">Login</a>
+            <a href="{% url 'register' %}" class="btn" style="background: #27ae60;">Register</a>
+        </div>
+        {% endif %}
+    </section>
+
+    <style>
+        .btn {
+            display: inline-block;
+            background: #3498db;
+            color: white;
+            padding: 12px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            margin-top: 10px;
+            border: none;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .btn:hover {
+            opacity: 0.8;
+            transform: translateY(-1px);
+        }
+    </style>
+</div>
+{% endblock %}

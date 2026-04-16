@@ -1,0 +1,33 @@
+# Python cache files
+__pycache__/
+*.py[cod]
+
+# Local environment and secrets
+.env
+.venv/
+env/
+venv/
+local_settings.py
+
+# Database
+# Note: Keep sqlite3 ignored for local work, but if your 
+# project requires it for submission, remove this line.
+db.sqlite3
+
+# Logs and temporary files
+*.log
+*.bak
+
+# Static and Media files
+# Generally ignored as they are generated/uploaded locally
+static/
+media/
+
+# IDE and Editor settings
+.vscode/
+.idea/
+
+# Testing and Coverage
+.coverage
+htmlcov/
+.pytest_cache/

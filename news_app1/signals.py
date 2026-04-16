@@ -14,11 +14,10 @@ def handle_article_approval(sender, instance, created, **kwargs):
         try:
             # Wrapped URL and data to stay under 79 characters
             requests.post(
-                'http://localhost:8000/api/approved/',
-                data={'id': instance.id},
-                timeout=1
+                "http://localhost:8000/api/approved/",
+                data={"id": instance.id},
+                timeout=1,
             )
         except Exception as e:
             # This will show in the console if the mock fails
             print(f"Signal executed, but API call failed: {e}")
-

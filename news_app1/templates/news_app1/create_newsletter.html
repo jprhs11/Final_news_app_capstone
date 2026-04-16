@@ -1,0 +1,46 @@
+{% extends 'news_app1/base.html' %}
+
+{% block content %}
+<div
+    style="max-width: 600px; margin: 50px auto; font-family: sans-serif; background: #fff; padding: 30px; border-radius: 8px; border: 1px solid #ddd;">
+    <h2 style="color: #2c3e50; border-bottom: 2px solid #9b59b6; padding-bottom: 10px;">Curate New Newsletter</h2>
+
+    <form method="post" style="margin-top: 20px;">
+        {% csrf_token %}
+
+        <div style="margin-bottom: 20px;">
+            <label style="display:block; font-weight:bold; margin-bottom:5px;">Newsletter Title</label>
+            <input type="text" name="title" required
+                style="width:100%; padding:10px; border:1px solid #ccc; border-radius:4px;">
+        </div>
+
+        <div style="margin-bottom: 20px;">
+            <label style="display:block; font-weight:bold; margin-bottom:5px;">Description</label>
+            <textarea name="description" required
+                style="width:100%; height:100px; padding:10px; border:1px solid #ccc; border-radius:4px;"></textarea>
+        </div>
+
+        <div style="margin-bottom: 20px;">
+            <label style="display:block; font-weight:bold; margin-bottom:5px;">Select Approved Articles</label>
+            <p style="font-size: 0.85rem; color: #7f8c8d;">Hold Ctrl (or Cmd) to select multiple.</p>
+            <select name="articles" multiple required
+                style="width:100%; height:150px; padding:10px; border:1px solid #ccc; border-radius:4px;">
+                {% for article in articles %}
+                <option value="{{ article.id }}">{{ article.title }}</option>
+                {% empty %}
+                <option disabled>No approved articles available to bundle.</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <button type="submit"
+            style="background: #9b59b6; color: white; border: none; padding: 12px 25px; border-radius: 4px; font-weight: bold; cursor: pointer; width: 100%;">
+            Publish Newsletter
+        </button>
+    </form>
+
+    <p style="text-align: center; margin-top: 20px;">
+        <a href="{% url 'home' %}" style="color: #7f8c8d; text-decoration: none;">&larr; Back to Dashboard</a>
+    </p>
+</div>
+{% endblock %}

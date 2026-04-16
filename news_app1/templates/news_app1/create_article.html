@@ -1,0 +1,20 @@
+{% extends 'news_app1/base.html' %}
+{% block content %}
+<h2>Create a New Article</h2>
+<form method="post">
+    {% csrf_token %}
+    <p><input type="text" name="title" placeholder="Article Title" required style="width:100%; padding:10px;"></p>
+    <p><textarea name="content" placeholder="Write your story here..." required
+            style="width:100%; height:300px; padding:10px;"></textarea></p>
+    <p>
+        <label>Select Publisher (Optional):</label>
+        <select name="publisher">
+            <option value="">Independent</option>
+            {% for pub in publishers %}
+            <option value="{{ pub.id }}">{{ pub.name }}</option>
+            {% endfor %}
+        </select>
+    </p>
+    <button type="submit" class="btn btn-success">Submit for Review</button>
+</form>
+{% endblock %}

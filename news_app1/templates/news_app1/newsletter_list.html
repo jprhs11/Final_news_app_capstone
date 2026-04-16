@@ -1,0 +1,65 @@
+{% extends 'news_app1/base.html' %}
+
+{% block content %}
+<div style="max-width: 800px; margin: 20px auto; font-family: sans-serif;">
+    <h2 style="color: #2c3e50; border-bottom: 2px solid #9b59b6; padding-bottom: 10px;">Curated Newsletters</h2>
+
+    <div style="margin-top: 20px;">
+        {% for newsletter in newsletters %}
+        <div
+            style="background: #fff; border: 1px solid #ddd; padding: 25px; margin-bottom: 30px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
+            <h3 style="color: #8e44ad; margin-top: 0;">{{ newsletter.title }}</h3>
+
+            <p style="color: #7f8c8d; font-size: 0.9rem;">
+                {% with curated_date=newsletter.created_at|date:"F j, Y" %}
+                Curated by <strong>{{ newsletter.author.username }}</strong> on {{ curated_date }}
+                {% endwith %}
+            </p>
+
+            <p style="color: #34495e; font-style: italic; margin-bottom: 20px;">
+                "{{ newsletter.description }}"
+            </p>
+
+            <h4
+                style="border-top: 1px solid #eee; padding-top: 15px; font-size: 0.9rem; color: #2c3e50; margin-bottom: 10px;">
+                Included Articles:</h4>
+            <ul style="list-style: none; padding: 0;">
+                {% for article in newsletter.articles.all %}
+                <li style="margin-bottom: 8px;">
+                    <a href="{% url 'article_detail' article.id %}"
+                        style="color: #3498db; text-decoration: none; font-weight: bold;">
+                        • {{ article.title }}
+                    </a>
+                </li>
+                {% empty %}
+                <li style="color: #bdc3c7; font-style: italic;">No articles in this collection yet.</li>
+                {% endfor %}
+            </ul>
+
+            {# Management Actions for Owners and Editors #}
+            {% if newsletter.author == user or user.role|lower == 'editor' or user.is_superuser %}
+            <div style="margin-top: 20px; padding-top: 15px; border-top: 1px dashed #eee; display: flex; gap: 20px;">
+                <a href="{% url 'edit_newsletter' newsletter.id %}"
+                    style="color: #f39c12; text-decoration: none; font-weight: bold; font-size: 0.9rem;">
+                    Edit Newsletter
+                </a>
+                <form action="{% url 'delete_newsletter' newsletter.id %}" method="post"
+                    onsubmit="return confirm('Delete this newsletter?');" style="margin: 0;">
+                    {% csrf_token %}
+                    <button type="submit"
+                        style="background: none; border: none; color: #e74c3c; font-weight: bold; cursor: pointer; padding: 0; font-family: inherit; font-size: 0.9rem;">
+                        Delete Newsletter
+                    </button>
+                </form>
+            </div>
+            {% endif %}
+        </div>
+        {% empty %}
+        <div style="text-align: center; padding: 50px; background: #f9f9f9; border-radius: 8px;">
+            <p style="color: #7f8c8d;">No newsletters have been curated yet.</p>
+            <a href="{% url 'home' %}" style="color: #3498db; text-decoration: none;">Return Home</a>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

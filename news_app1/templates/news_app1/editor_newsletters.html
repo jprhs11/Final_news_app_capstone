@@ -1,0 +1,72 @@
+{% extends 'news_app1/base.html' %}
+
+{% block content %}
+<div style="max-width: 900px; margin: 40px auto; font-family: sans-serif;">
+    <header style="border-bottom: 2px solid #27ae60; padding-bottom: 10px; margin-bottom: 30px;">
+        <h2 style="color: #2c3e50; margin: 0;">Master Newsletter Management (Editor)</h2>
+        <p style="color: #7f8c8d; margin-top: 5px;">Review, approve, update, or delete all system newsletters.</p>
+    </header>
+
+    {% for newsletter in newsletters %}
+    <div
+        style="background: #fff; border: 1px solid #ddd; border-radius: 8px; padding: 25px; margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+            <h3 style="margin-top: 0; color: #2c3e50;">{{ newsletter.title }}</h3>
+
+            {# Approval Status Badge #}
+            {% if newsletter.approved %}
+            <span
+                style="background: #e8f5e9; color: #2e7d32; padding: 5px 12px; border-radius: 20px; font-size: 0.85rem; font-weight: bold; border: 1px solid #c8e6c9;">
+                ✅ Approved
+            </span>
+            {% else %}
+            <span
+                style="background: #fff3e0; color: #ef6c00; padding: 5px 12px; border-radius: 20px; font-size: 0.85rem; font-weight: bold; border: 1px solid #ffe0b2;">
+                ⏳ Pending Review
+            </span>
+            {% endif %}
+        </div>
+
+        <!-- prettier-ignore -->
+        <p style="color: #7f8c8d; font-size: 0.9rem; margin: 5px 0;">
+            Author: <strong>{{newsletter.author.username}}</strong> |
+            Created: {{newsletter.created_at|date:"M d, Y"}}
+        </p>
+
+
+
+        <div
+            style="margin-top: 20px; display: flex; gap: 15px; align-items: center; border-top: 1px solid #eee; padding-top: 15px;">
+            {# Approval Button - Only shows if pending #}
+            {% if not newsletter.approved %}
+            <form action="{% url 'approve_newsletter' newsletter.id %}" method="post" style="margin: 0;">
+                {% csrf_token %}
+                <button type="submit"
+                    style="background: #27ae60; color: white; padding: 8px 15px; border: none; border-radius: 5px; font-weight: bold; cursor: pointer;">
+                    Approve Newsletter
+                </button>
+            </form>
+            {% endif %}
+
+            {# Update/Edit Link #}
+            <a href="{% url 'edit_newsletter' newsletter.id %}"
+                style="color: #f39c12; text-decoration: none; font-weight: bold;">Update Content</a>
+
+            {# Delete Action #}
+            <form action="{% url 'delete_newsletter' newsletter.id %}" method="post"
+                onsubmit="return confirm('Permanently delete this newsletter?');" style="margin: 0;">
+                {% csrf_token %}
+                <button type="submit"
+                    style="background: none; border: none; color: #e74c3c; font-weight: bold; cursor: pointer; padding: 0; font-family: inherit; font-size: 1rem;">
+                    Delete
+                </button>
+            </form>
+        </div>
+    </div>
+    {% empty %}
+    <div style="text-align: center; padding: 50px; background: #f9f9f9; border: 1px dashed #ccc; border-radius: 8px;">
+        <p style="color: #7f8c8d;">No newsletters found in the system.</p>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

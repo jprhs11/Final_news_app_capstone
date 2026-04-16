@@ -1,0 +1,56 @@
+{% extends 'news_app1/base.html' %}
+
+{% block content %}
+<div style="max-width: 800px; margin: 40px auto; font-family: sans-serif; line-height: 1.8; color: #2c3e50;">
+
+    {# --- NEW: Author-Only Feedback Alert --- #}
+    {% if user == article.author and article.review_notes %}
+    <div
+        style="background: #fff4e5; border: 1px solid #ffd8a8; padding: 20px; border-radius: 8px; margin-bottom: 30px;">
+        <h4 style="margin: 0 0 10px 0; color: #d9480f; display: flex; align-items: center;">
+            <span style="margin-right: 10px;">📝</span> Editor's Feedback
+        </h4>
+        <p style="margin: 0; color: #5c5f62; font-style: italic;">
+            "{{ article.review_notes }}"
+        </p>
+        <p style="margin: 10px 0 0 0; font-size: 0.85rem; color: #868e96;">
+            Please address these comments if your article is still pending.
+        </p>
+    </div>
+    {% endif %}
+
+    <header style="margin-bottom: 30px;">
+        <h1 style="font-size: 2.5rem; margin-bottom: 10px; line-height: 1.2;">{{ article.title }}</h1>
+        <div
+            style="color: #7f8c8d; font-size: 1rem; display: flex; gap: 15px; border-bottom: 1px solid #eee; padding-bottom: 15px;">
+            <span>By <strong>{{ article.author.username }}</strong></span>
+            <span>|</span>
+            <span>{{ article.created_at|date:"F d, Y" }}</span>
+            {% if article.publisher %}
+            <span>|</span>
+            <span>Published via <strong>{{ article.publisher.name }}</strong></span>
+            {% endif %}
+        </div>
+    </header>
+
+    <article style="font-size: 1.15rem; white-space: pre-wrap; color: #34495e;">
+        {{ article.content }}
+    </article>
+
+    <footer
+        style="margin-top: 50px; padding-top: 20px; border-top: 1px solid #eee; display: flex; justify-content: space-between;">
+        <a href="{% url 'home' %}" style="color: #3498db; text-decoration: none; font-weight: bold;">&larr; Back to
+            Portal</a>
+
+        {% if is_reader %}
+        <form action="{% url 'toggle_subscription' 'journalist' article.author.id %}" method="post">
+            {% csrf_token %}
+            <button type="submit"
+                style="background: #34495e; color: white; border: none; padding: 8px 15px; border-radius: 4px; cursor: pointer;">
+                Follow Author
+            </button>
+        </form>
+        {% endif %}
+    </footer>
+</div>
+{% endblock %}

@@ -1,0 +1,23 @@
+<!-- publisher_articles.html -->
+{% extends 'news_app1/base.html' %}
+
+{% block content %}
+<a href="{% url 'publisher_directory' %}">&larr; Back to Publishers</a>
+<h1>Articles by {{ publisher.name }}</h1>
+
+<hr>
+
+{% for article in articles %}
+<div style="margin-bottom: 20px; border-bottom: 1px solid #eee; padding-bottom: 10px;">
+    {# These will now render correctly because they are inside the loop #}
+    <h3>{{ article.title }}</h3>
+    <p style="color: #7f8c8d;">
+        By {{ article.author.username }} on {{ article.created_at|date:"F j, Y" }}
+    </p>
+    <a href="{% url 'article_detail' article.id %}">Read Article</a>
+</div>
+{% empty %}
+<p>This publisher has no approved articles yet.</p>
+{% endfor %}
+
+{% endblock %}

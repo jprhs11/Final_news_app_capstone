@@ -1,0 +1,52 @@
+{% extends 'news_app1/base.html' %}
+
+{% block content %}
+<div style="max-width: 800px; margin: 40px auto; font-family: sans-serif;">
+    <a href="{% url 'home' %}" style="color: #3498db; text-decoration: none;">
+        &larr; Back to Home
+    </a>
+
+    <header style="margin-top: 20px; border-bottom: 2px solid #eee; 
+                   padding-bottom: 10px; margin-bottom: 30px;">
+        <h1 style="color: #2c3e50; margin: 0;">Journalists Directory</h1>
+        <p style="color: #7f8c8d;">Find and follow your favourite writers.</p>
+    </header>
+
+    <div style="display: grid; gap: 15px;">
+        {% for journalist in journalists %}
+        <div style="background: #f9f9f9; padding: 20px; border-radius: 8px; 
+                    border: 1px solid #ddd; display: flex; 
+                    justify-content: space-between; align-items: center;">
+
+            <div>
+                {# Clickable name takes user to the journalist's article list #}
+                <h3 style="margin: 0;">
+                    <a href="{% url 'author_articles' journalist.id %}" style="text-decoration: none; color: #2c3e50;">
+                        {{ journalist.username }}
+                    </a>
+                </h3>
+                <p style="margin: 5px 0 0 0; color: #7f8c8d; font-size: 0.9rem;">
+                    Articles: <strong>{{ journalist.articles.count }}</strong>
+                </p>
+            </div>
+
+            {% if is_reader %}
+            <a href="{% url 'toggle_subscription' 'journalist' journalist.id %}" class="btn" style="padding: 8px 16px; font-size: 0.9rem; 
+                                 background: #34495e; min-width: 100px; 
+                                 text-align: center; color: white; 
+                                 text-decoration: none; border-radius: 5px; 
+                                 font-weight: bold;">
+                {% if journalist in user.subscribed_journalists.all %}
+                Unfollow
+                {% else %}
+                Follow
+                {% endif %}
+            </a>
+            {% endif %}
+        </div>
+        {% empty %}
+        <p style="color: #7f8c8d; text-align: center;">No journalists found.</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

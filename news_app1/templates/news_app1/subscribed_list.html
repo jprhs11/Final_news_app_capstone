@@ -1,0 +1,34 @@
+{% extends 'news_app1/base.html' %}
+
+{% block content %}
+<div style="max-width: 800px; margin: 20px auto; font-family: sans-serif;">
+    <h2 style="color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 10px;">My Subscribed Feed</h2>
+
+    <div style="margin-top: 20px;">
+        {% for article in articles %}
+        <article
+            style="background: #fff; border: 1px solid #ddd; padding: 20px; margin-bottom: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+            <h3 style="margin-top: 0; color: #2c3e50;">{{ article.title }}</h3>
+            <p style="color: #7f8c8d; font-size: 0.9rem;">
+                Published by <strong>{{ article.author.username }}</strong>
+                on {{ article.created_at|date:"F j, Y" }}
+            </p>
+            <div style="line-height: 1.6; color: #34495e; margin-bottom: 15px;">
+                {{ article.content|truncatewords:50 }}
+            </div>
+            <!-- Added "Read More" link for intuitive navigation -->
+            <a href="{% url 'article_detail' article.id %}"
+                style="color: #3498db; font-weight: bold; text-decoration: none; font-size: 0.95rem;">
+                Read Full Article &rarr;
+            </a>
+        </article>
+        {% empty %}
+        <div style="text-align: center; padding: 50px; background: #f9f9f9; border-radius: 8px;">
+            <p style="color: #7f8c8d;">You haven't subscribed to any publishers or journalists yet, or they haven't
+                posted any approved articles.</p>
+            <a href="{% url 'home' %}" style="color: #3498db; text-decoration: none;">Return Home</a>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

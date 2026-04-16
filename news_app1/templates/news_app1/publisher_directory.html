@@ -1,0 +1,66 @@
+{% extends 'news_app1/base.html' %}
+
+{% block content %}
+<div style="max-width: 800px; margin: 40px auto; font-family: sans-serif;">
+    <a href="{% url 'home' %}" style="color: #3498db; text-decoration: none;">
+        &larr; Back to Home
+    </a>
+
+    <header style="margin-top: 20px; border-bottom: 2px solid #eee; 
+                   padding-bottom: 10px; margin-bottom: 30px;">
+        <h1 style="color: #2c3e50; margin: 0;">News Publishers</h1>
+        <p style="color: #7f8c8d;">Browse and follow news organisations.</p>
+    </header>
+
+    <div style="display: grid; gap: 15px;">
+        {% for publisher in publishers %}
+        <div style="background: #f9f9f9; padding: 20px; border-radius: 8px; 
+                    border: 1px solid #ddd; display: flex; 
+                    justify-content: space-between; align-items: center;">
+
+            <div>
+                {# Clickable name takes user to the specific publisher feed #}
+                <h3 style="margin: 0;">
+                    <a href="{% url 'publisher_articles' publisher.id %}"
+                        style="text-decoration: none; color: #2c3e50;">
+                        {{ publisher.name }}
+                    </a>
+                </h3>
+                <p style="margin: 5px 0 0 0; color: #7f8c8d; font-size: 0.9rem;">
+                    Articles: <strong>{{ publisher.published_articles.count }}</strong>
+                </p>
+            </div>
+
+            {% if is_reader %}
+            <a href="{% url 'toggle_subscription' 'publisher' publisher.id %}" class="btn"
+                style="background: #34495e; padding: 8px 15px;">
+                {% if publisher in user.subscribed_publishers.all %}
+                Unfollow
+                {% else %}
+                Follow Publisher
+                {% endif %}
+            </a>
+            {% endif %}
+        </div>
+        {% empty %}
+        {# Requirement: Handles the blank screen by showing a message #}
+        <div style="text-align: center; padding: 40px; color: #7f8c8d;">
+            <p>No publishers found. Add them via the Admin panel to see them here.</p>
+            <a href="/admin/" class="btn" style="background: #7f8c8d;">Open Admin</a>
+        </div>
+        {% endfor %}
+    </div>
+
+    <style>
+        .btn {
+            display: inline-block;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+            border: none;
+        }
+    </style>
+</div>
+{% endblock %}
