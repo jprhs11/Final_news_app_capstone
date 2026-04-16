@@ -6,7 +6,9 @@ A full-stack Django web application featuring a robust role-based access control
 🚀 Key Features:
 
 
+
 👥 User Roles:
+
 
 Readers: Explore a directory of journalists and publishers, subscribe to favorites, and view a personalized feed of approved articles.
 
@@ -26,6 +28,7 @@ PEP 8 Compliance: Code follows strict Python styling guidelines for readability 
 
 
 💻 Local Installation (Virtual Environment):
+
 
 1. Clone the Repository:
    
@@ -63,6 +66,7 @@ Access the site at: http://127.0.0.1:8000
 
 🐳 Deployment with Docker:
 
+
 The application is containerized to ensure it works on any system without manual configuration.
 
 1. Build the Image:
@@ -86,6 +90,7 @@ Access: Open http://localhost:8000/ in your browser.
 
 📚 Technical Documentation (Sphinx):
 
+
 Technical documentation for modules, views, and models is located in the docs/ directory.
 
 To view: Open docs/build/html/index.html in any web browser.
@@ -98,6 +103,7 @@ To rebuild:
 
 
 📁 Project Structure:
+
 
 news_app1/: The primary Django application logic.
 
@@ -120,6 +126,7 @@ Implemented login_required decorators and role-based HttpResponseForbidden check
 
 Sensitive files (like local databases) are excluded via .gitignore.
 
-💡 Note for Reviewers
+
+💡 Note for Reviewers:
 
 The Docker environment is configured to use SQLite by default to ensure portability and instant functionality across different machines without requiring a pre-configured MySQL server.
