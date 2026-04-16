@@ -3,10 +3,10 @@
 
 A full-stack Django web application featuring a robust role-based access control (RBAC) system for journalists, editors, and readers. This project demonstrates advanced Django workflows, containerization with Docker, and automated documentation with Sphinx.
 
-🚀 Key Features
+🚀 Key Features:
 
 
-👥 User Roles
+👥 User Roles:
 
 Readers: Explore a directory of journalists and publishers, subscribe to favorites, and view a personalized feed of approved articles.
 
@@ -14,7 +14,7 @@ Journalists: Draft and manage articles, curate approved content into newsletters
 
 Editors: A unified dashboard to review, edit, and approve/reject both articles and newsletters. Editors can also create publisher profiles directly from the front-end.
 
-🛠 Technical Enhancements
+🛠 Technical Enhancements:
 
 Version Control: Managed via Git with dedicated feature branches (docs, container).
 
@@ -25,7 +25,7 @@ Containerization: Fully containerized using Docker for "plug-and-play" deploymen
 PEP 8 Compliance: Code follows strict Python styling guidelines for readability and maintainability.
 
 
-💻 Local Installation (Virtual Environment)
+💻 Local Installation (Virtual Environment):
 
 1. Clone the Repository:
    
@@ -61,7 +61,7 @@ PEP 8 Compliance: Code follows strict Python styling guidelines for readability 
 Access the site at: http://127.0.0.1:8000
 
 
-🐳 Deployment with Docker
+🐳 Deployment with Docker:
 
 The application is containerized to ensure it works on any system without manual configuration.
 
@@ -84,7 +84,7 @@ In a separate terminal window, initialize the container's database and admin:
 Access: Open http://localhost:8000/ in your browser.
 
 
-📚 Technical Documentation (Sphinx)
+📚 Technical Documentation (Sphinx):
 
 Technical documentation for modules, views, and models is located in the docs/ directory.
 
@@ -97,7 +97,7 @@ To rebuild:
       python -m sphinx.cmd.build -b html source build/html
 
 
-📁 Project Structure
+📁 Project Structure:
 
 news_app1/: The primary Django application logic.
 
@@ -112,7 +112,7 @@ Dockerfile: Instructions for building the Docker image.
 requirements.txt: List of Python packages required for the project.
 
 
-🛡 Security & Defensive Coding
+🛡 Security & Defensive Coding:
 
 Used get_object_or_404 to prevent server crashes on missing data.
 
